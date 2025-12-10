@@ -1,71 +1,95 @@
-let title = document.getElementById('title');
-console.log(title.textContent);
-
+let form = document.getElementById('formIntegrantes');
 
 let nombresApellidos1 = [
-    document.getElementById('primerNombre1'), 
+    document.getElementById('primerNombre1'),
     document.getElementById('segundoNombre1'),
     document.getElementById('primerApellido1'),
-    document.getElementById('segundoApellido1')];
+    document.getElementById('segundoApellido1')
+];
 
 let nombresApellidos2 = [
-    document.getElementById('primerNombre2'), 
+    document.getElementById('primerNombre2'),
     document.getElementById('segundoNombre2'),
     document.getElementById('primerApellido2'),
-    document.getElementById('segundoApellido2')];
+    document.getElementById('segundoApellido2')
+];
 
+let coincidencias = [];
 
 function construirNombreCompleto(lista) {
-    let textoFinal = '';
-    for (let i=0; i < lista.length; i++){
-        let texto = lista[i].textContent;
+    let partes = [];
 
-        if (texto !== ''){
-            if (i>=2){
-                texto = texto.toUpperCase();
-            }
-            textoFinal += texto + ' ';
-        }   
+    for (let i = 0; i < lista.length; i++) {
+        let texto = lista[i].value.trim();
+        if (texto !== "") {
+            if (i >= 2) texto = texto.toUpperCase();
+            partes.push(texto);
+        }
     }
-    return textoFinal;
+
+    return partes;
 }
 
-function buscarCoincidencias(lista1, lista2, inicio, fin, tipo){
+function buscarCoincidencias(lista1, lista2, inicio, fin, tipo) {
+
     for (let i = inicio; i <= fin; i++) {
-        let item1 = lista1[i].textContent.toLowerCase();
+        let item1 = lista1[i].value.trim().toLowerCase();
 
         for (let j = inicio; j <= fin; j++) {
-            let item2 = lista2[j].textContent.toLowerCase();
-            
-            if (item1 != '' && item1 === item2) {
-                console.log(`Se encontro una coincidencia de ${tipo}: "${item1}"`);
-                color = prompt(
-                    `Se encontró una coincidencia de ${tipo}: "${item1}".\n` +
-                    `¿Con qué color desea resaltarlo?\n` +
-                    `Ej: red, blue, green, #FF0000, #00FF00, etc.`);
+            let item2 = lista2[j].value.trim().toLowerCase();
 
-                lista1[i].style.color = `${color}`;
-                lista2[j].style.color = `${color}`;
-            } else{
-                console.log(`No hay coincidencias entre ${tipo}`);
+            if (item1 !== "" && item1 === item2) {
+
+                let color = prompt(
+                    `Coincidencia de ${tipo}: "${item1}".\n` +
+                    `Ingrese color (red, blue, #FF0000, etc):`
+                );
+
+                coincidencias.push({
+                    texto: item1,
+                    color: color
+                });
             }
         }
     }
 }
 
-let nombreCompleto1 = construirNombreCompleto(nombresApellidos1);
-let nombreCompleto2 = construirNombreCompleto(nombresApellidos2);
+function resaltar(textoArray) {
 
+    return textoArray.map(palabra => {
+        let palabraLower = palabra.toLowerCase();
 
-console.log(`-----
-integrante 1: "${nombreCompleto1}"
-integrante 2: "${nombreCompleto2}"
------ `);
+        let coincidencia = coincidencias.find(c => c.texto === palabraLower);
 
-buscarCoincidencias(nombresApellidos1, nombresApellidos2, 0, 1, 'nombres');
+        if (coincidencia) {
+            return `<span style="color:${coincidencia.color}">${palabra}</span>`;
+        }
 
-let confirmacionApellidos = confirm('Desea buscar coincidencias entre apellidos?');
+        return palabra;
 
-if (confirmacionApellidos) {
-    buscarCoincidencias(nombresApellidos1, nombresApellidos2, 2, 3, 'apellidos')
+    }).join(" ");
 }
+
+
+form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    coincidencias = [];
+
+    let partes1 = construirNombreCompleto(nombresApellidos1);
+    let partes2 = construirNombreCompleto(nombresApellidos2);
+
+    buscarCoincidencias(nombresApellidos1, nombresApellidos2, 0, 1, "nombres");
+
+    if (confirm("¿Desea buscar coincidencias entre apellidos?")) {
+        buscarCoincidencias(nombresApellidos1, nombresApellidos2, 2, 3, "apellidos");
+    }
+
+    let resultado = document.getElementById('resultado');
+
+    resultado.innerHTML = `
+        <h2>Resultados</h2>
+        <p><strong>Integrante 1:</strong> ${resaltar(partes1)}</p>
+        <p><strong>Integrante 2:</strong> ${resaltar(partes2)}</p>
+    `;
+});

@@ -6,39 +6,48 @@
     <title id="title">Ejercicio</title>
 </head>
 <body>
-    <!-- Punto 1 -->
     <h1>Ejercicio</h1>
 
-    <!-- Punto 2 -->
-    <h2>Primer integrante</h2>
-    <dl>
-        <dt>Primer nombre</dt>
-        <dd id="primerNombre1">Leandro</dd>
+    <form id="formIntegrantes">
 
-        <dt>Segundo nombre</dt>
-        <dd id="segundoNombre1">Gabriel</dd>
+        <fieldset>
+            <legend>Integrante 1</legend>
 
-        <dt>Primer apellido</dt>
-        <dd id="primerApellido1">Pelozo</dd>
-        
-        <dt>Segundo apellido</dt>
-        <dd id="segundoApellido1"></dd>
-    </dl>
+            <label for="primerNombre1">Primer nombre</label>
+            <input type="text" id="primerNombre1">
 
-    <h2>Segundo integrante</h2>
-    <dl>
-        <dt>Primer nombre</dt>
-        <dd id="primerNombre2">Rodo</dd>
+            <label for="segundoNombre1">Segundo nombre</label>
+            <input type="text" id="segundoNombre1">
 
-        <dt>Segundo nombre</dt>
-        <dd id="segundoNombre2">Gabriel</dd>
+            <label for="primerApellido1">Primer apellido</label>
+            <input type="text" id="primerApellido1">
 
-        <dt>Primer apellido</dt>
-        <dd id="primerApellido2">Pelozo</dd>
+            <label for="segundoApellido1">Segundo apellido</label>
+            <input type="text" id="segundoApellido1">
+        </fieldset>
 
-        <dt>Segundo apellido</dt>
-        <dd id="segundoApellido2">Palacios</dd>
-    </dl>
+
+        <fieldset>
+            <legend>Integrante 2</legend>
+
+            <label for="primerNombre2">Primer nombre</label>
+            <input type="text" id="primerNombre2">
+
+            <label for="segundoNombre2">Segundo nombre</label>
+            <input type="text" id="segundoNombre2">
+
+            <label for="primerApellido2">Primer apellido</label>
+            <input type="text" id="primerApellido2">
+
+            <label for="segundoApellido2">Segundo apellido</label>
+            <input type="text" id="segundoApellido2">
+        </fieldset>
+
+        <button type="submit">Procesar</button>
+
+    </form> 
+
+    <div id="resultado"></div>
 
     <script src="js/main.js"></script>
 </body>
